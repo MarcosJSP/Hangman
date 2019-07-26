@@ -7,31 +7,58 @@ body{
 
 
 .wrapper{
+    padding: 60px 0;
     display: flex;
     flex-direction: column;
 }
 
 /**/
-.hint-section{
+.top-panel{
     display: flex;
-    flex-basis: 20%;
+    flex-direction: column;
     align-items: center;
 }
 
-.hint{
-    width: 400px;
-    height: 40px;
+.hidden-word-bar{
     border-radius: 40px;
-    background-color: white;
     display: flex;
     align-items: center;
+    justify-content: center;
+    letter-spacing: 5px;
 }
 
 /**/
+.hints{
+    margin: 20px 0;
+    flex-basis: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.hint-button{
+    flex-basis: 10%;
+    margin-right: 10px;
+}
+
+.hints-area{
+    flex-basis: 50%;
+    color: grey;
+}
+
+
+/**/
+.middle-panel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 20%;
+}
+
 .abcdary{
     flex-basis: 50%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .button{
@@ -39,8 +66,8 @@ body{
     border-left: 5px;
     padding: 0;
     flex-shrink: 0;
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     margin: 10px;
     background-color: white;
     
