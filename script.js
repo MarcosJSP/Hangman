@@ -10,7 +10,7 @@ function film_generator(film_title,hints){
 film_list.push(film_generator("Titanic",["Barco","Iceberg","Tabla flotando"]));
 film_list.push(film_generator("Los Vengadores",["La piedra del poder", "Groot", "No me quiero ir señor Stark..."]));
 film_list.push(film_generator("Buscando a Nemo",["Pez perdido","Tiburones abusones", "Buscando a Dory"]));
-film_list.push(film_generator("El rey león",["Simba", "Timon y Pumba","Rafiki"]));
+film_list.push(film_generator("El rey leon",["Simba", "Timon y Pumba","Rafiki"]));
 film_list.push(film_generator("El caballero oscuro",["O mueres como un héroe, o vives lo suficiente para verte convertido en el villano.",
     "Joker","Altera el orden establecido y el mundo se volverá un caos"]));
 
@@ -38,6 +38,7 @@ var letters_used = {
 localStorage.setItem("letters_found", JSON.stringify(letters_found));
 localStorage.setItem("film", JSON.stringify(film));
 localStorage.setItem("letters_used", JSON.stringify(letters_used));
+localStorage.setItem("timer", JSON.stringify(60));
 
 
 // ------------------------------------------------------------------
@@ -107,7 +108,8 @@ function get_from_local_storage(){
     return {
         film: JSON.parse(localStorage.getItem("film")),
         letters_found: JSON.parse(localStorage.getItem("letters_found")),
-        letters_used: JSON.parse(localStorage.getItem("letters_used"))
+        letters_used: JSON.parse(localStorage.getItem("letters_used")),
+        timer: localStorage.getItem("timer")
         };
 }
 
@@ -120,6 +122,9 @@ function update_local_storage_film(film){
     localStorage.setItem("film", JSON.stringify(film));
 }
 
+function update_local_storage_timer(seconds){
+    localStorage.setItem("timer", seconds);
+}
 
 function update_word_on_html(word_to_update){
     var hidden_bar = document.getElementsByClassName("hidden-word-bar")[0];
@@ -128,7 +133,6 @@ function update_word_on_html(word_to_update){
 
 function update_hint_on_html(hint_to_update){
     var hint_area = document.getElementsByClassName("hints-area")[0];
-    console.log(hint_to_update);
     hint_area.innerHTML = hint_to_update;
 }
 
@@ -136,12 +140,49 @@ function remaining_parts(failed_letters){
     return (5 - failed_letters.length);
 }
 
+function did_game_start(letters_used){
+    return (letters_used.success.length>0 || letters_used.fail.length>0);
+}
+
+function update_parts_left_on_html(remaining_parts){
+    var html = document.getElementsByClassName("parts-left")[0];
+    html.innerHTML=remaining_parts;
+}
+
+function play_condition(letters_used, timer, letters_found){
+    return (remaining_parts(letters_used.fail) > 0) 
+        && (timer > 0)
+        && !check_all_letters_found(letters_found);
+}
+
+function check_all_letters_found(letters_found){
+    var num_of_true = 0;
+    for (i = 0; i < letters_found.length; i++){
+        if(letters_found[i] == true){
+            num_of_true++;
+        }
+    }
+    return num_of_true == letters_found.length;
+}
+
+function match(film_name, button_text){
+    return film_name.toLowerCase().includes(button_text.toLowerCase());
+}
+
+function hide_hints_on_html(){
+    document.getElementsByClassName("hints")[0].style.visibility="initial";
+}
+
 function identify_button(event){
     var button = event.target;
-    var {film, letters_found, letters_used} = get_from_local_storage();
-    var match = film.name.toLowerCase().includes(button.innerHTML.toLowerCase());
-    if(remaining_parts(letters_used.fail) > 0){
-        if(match){ 
+    var {film, letters_found, letters_used, timer} = get_from_local_storage();
+    if(!did_game_start(letters_used))start_timer();
+    
+    if(play_condition(letters_used, timer, letters_found)){
+
+        hide_hints_on_html();
+
+        if(match(film.name, button.innerHTML)){ 
             letters_used.success.push(button.innerHTML);
             letters_found=update_letters_found(letters_found,
             get_letters_contained(film.name, button.innerHTML));
@@ -151,16 +192,18 @@ function identify_button(event){
         }else{
             letters_used.fail.push(button.innerHTML);
             update_abcdary_on_html(button,false);
+            update_parts_left_on_html(remaining_parts(letters_used.fail));
         }
-        
         update_local_storage(letters_used,letters_found);
         button.removeEventListener("click",identify_button);
     }
 }
 
-function give_hint(event){
+
+
+async function give_hint(event){
     var button = event.target;
-    var {film} = get_from_local_storage();
+    var {film,timer} = get_from_local_storage();
     var hint = film.hints[Math.floor(Math.random() * film.hints.length)];
     var film_hints = film.hints;
     if(film_hints.length > 0){
@@ -170,7 +213,7 @@ function give_hint(event){
         if (index > -1) {
             film_hints.splice(index, 1);
         }
-        
+        update_local_storage_timer(parseInt(timer)-5);
         film.hints = film_hints;
         update_local_storage_film(film);
     }else{
@@ -186,3 +229,15 @@ for (let button = 0; button < buttons.length; button++) {
 
 var hint_button = document.getElementsByClassName("hint-button");
 hint_button[0].addEventListener("click", give_hint);
+
+async function start_timer(interval){
+    var interval = setInterval(function(){
+        var {letters_used, letters_found, timer}= get_from_local_storage();
+        timer--;
+        update_local_storage_timer(timer);
+        document.getElementById('timer-display').innerHTML=timer;
+        if (!play_condition(letters_used, timer, letters_found)) {
+            clearInterval(interval);
+        }
+    }, 1000);
+}

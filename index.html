@@ -10,15 +10,37 @@
 <body>
     <div class="wrapper">
         
+        <div class="header">
+            <div class="header-left">
+                <a class="logo" href="">Hangman</a>
+            </div>
+            <div class="header-right">
+                <a href=""><img src="resources/refresh-button.svg" alt="reload"></a>
+            </div>
+        </div>
+
         <div class="top-panel">
+            <div class="parts-left-zone">
+                Tries
+                <span class="parts-left">5</span>
+            </div>
             <div class="hidden-word-bar"></div>
+            
+            <div class="timer-zone">
+                Timer
+                <span id="timer-display">60</span>
+            </div>
+                
+        </div>
+
+        <div class="middle-panel">
             <div class="hints">
                 <button class="hint-button">Hint</button>
                 <div class="hints-area"></div>
             </div>
         </div>
         
-        <div class="middle-panel">
+        <div class="bottom-panel">
             <div class="abcdary">
                 <button class="button">A</button>
                 <button class="button">B</button>
@@ -48,6 +70,11 @@
                 <button class="button">Z</button>
             </div>
         </div>
+    
+    
+        <footer>
+            <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        </footer>
     </div>
     
     <script src="script.js"></script>

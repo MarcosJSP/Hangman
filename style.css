@@ -1,57 +1,157 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+@import url('https://fonts.googleapis.com/css?family=Secular+One&display=swap');
+
+:root{
+    --red:#EA3F5A;
+    --green:#7DBF7B;
+}
 
 body{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Secular One', sans-serif;
     background-color: whitesmoke;
+    
 }
 
+body, html{
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+button{
+    font-family: 'Secular One', sans-serif;
+}
 
 .wrapper{
-    padding: 60px 0;
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
 }
 
 /**/
-.top-panel{
-    display: flex;
-    flex-direction: column;
+.header{
+    display:flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.hidden-word-bar{
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 5px;
-}
-
-/**/
-.hints{
-    margin: 20px 0;
+.header-left,.header-right{
     flex-basis: 20%;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.logo{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bolder;
+    color: black;
+}
+
+.header-right > a > img{
+    height: 15px;
+    width: 15px;
+}
+
+.header-right img:active{
+    animation-name: spin;
+    animation-duration: 100ms;
+    animation-timing-function: linear; 
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(180deg);
+    }
+}
+
+/**/
+
+.top-panel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.parts-left-zone, .timer-zone{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex-basis: 20%;
+    color: var(--red);
+
+    font-family: var(--secondary-font);
+}
+
+
+.hidden-word-bar{
+    flex-basis: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 2px;
+}
+
+/**/
+.middle-panel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.hints{
+    font-size: 12px;
+    flex-basis: 50%;
+    width: 50%;
+    visibility: collapse;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hint-button{
+    text-align: center;
     flex-basis: 10%;
-    margin-right: 10px;
+    border: solid grey 1px;
+    background-color: #e1e1e1;
+    padding: 0px 7px;
+    font-size: inherit;
+}
+
+.hint-button:hover{
+    border: solid grey 1px;
+    background-color: #e7e7e7;
+}
+
+.hint-button:active{
+    border: solid grey 1px;
+    background-color: #cfcfcf;
+    padding: 0px 7px;
 }
 
 .hints-area{
+    margin-top: 10px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     flex-basis: 50%;
+    width: 100%;
     color: grey;
 }
 
 
 /**/
-.middle-panel{
+.bottom-panel{
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-basis: 20%;
 }
 
 .abcdary{
@@ -89,16 +189,32 @@ body{
 }
 
 .success{
-    background-color: #a9eca2;
+    background-color: var(--green);
     box-shadow: none;
     
 }
 
 .fail{
-    background-color: #e79e85;
+    background-color: var(--red);
     box-shadow: none;
 }
 
 .success,.fail{
     bottom:-1px;
+}
+
+/**/
+
+.header{
+    margin-bottom: 20px;
+}
+
+.top-panel, .middle-panel, .bottom-panel{
+    margin-bottom: 10px; 
+}
+
+footer,a{
+    text-align: end;
+    color: grey;
+    font-size: 5px;
 }
