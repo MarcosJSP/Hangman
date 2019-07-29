@@ -121,10 +121,71 @@ function give_hint(event){
         if (index > -1) {
             film_hints.splice(index, 1);
         }
+
         update_local_storage_timer(parseInt(timer)-5);
+        
         film.hints = film_hints;
         update_local_storage_film(film);
     }else{
         button.removeEventListener("click",give_hint);
     }
+}
+
+function game_over(win,letters_found=null, film_name=null){
+    if(!win){
+        show_word_completed_on_html(letters_found, film_name);
+    }
+    show_hints_on_html(false);
+    show_game_over_on_html(win);
+}
+
+function game_started(){
+    return localStorage.getItem("letters_used") === null 
+    || JSON.parse(localStorage.getItem("letters_used")).fail.length 
+    + JSON.parse(localStorage.getItem("letters_used")).success.length == 0
+    || !play_condition(letters_used, timer, letters_found);
+}
+
+function remove_buttons_listener(letters_used){
+    let btns = document.getElementsByClassName("button");
+
+    for (let button = 0; button < btns.length; button++) {
+        for (letter = 0; letter < letters_used.success.length; letter++){
+            if (btns[button].innerHTML == letters_used.success[letter]){
+                update_abcdary_on_html(btns[button], true);
+                btns[button].removeEventListener("click",identify_button);
+            }
+        }
+        for (letter = 0; letter < letters_used.fail.length; letter++){
+            if (btns[button].innerHTML == letters_used.fail[letter]){
+                update_abcdary_on_html(btns[button], false);
+                btns[button].removeEventListener("click",identify_button);
+            }
+        }
+    }
+}
+
+function add_buttons_listener(){
+    var buttons = document.getElementsByClassName("button");
+    for (let button = 0; button < buttons.length; button++) {
+        buttons[button].addEventListener("click", identify_button);
+    }
+}
+
+function refresh_buttons(){
+    var updatable_buttons = document.getElementsByClassName("refresh");
+
+    for (let button = 0; button < updatable_buttons.length; button++) {
+        updatable_buttons[button].addEventListener("click", refresh);
+    }
+}
+
+function add_hint_button_listener(){
+    var hint_button = document.getElementsByClassName("hint-button");
+    hint_button[0].addEventListener("click", give_hint);
+}
+
+function refresh(){
+    localStorage.clear();
+    document.location.reload();
 }

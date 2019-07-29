@@ -54,6 +54,10 @@ button{
     width: 15px;
 }
 
+.refresh{
+    cursor: pointer;
+}
+
 .header-right img:active{
     animation-name: spin;
     animation-duration: 100ms;
@@ -162,6 +166,7 @@ button{
 }
 
 .button{
+    cursor: pointer;
     position: relative;
     border-left: 5px;
     padding: 0;
